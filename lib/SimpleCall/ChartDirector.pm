@@ -59,7 +59,9 @@ sub set_legend {
 
     my $c_legend =
       $c->addLegend( $opt->{legend_pos_x}, $opt->{legend_pos_y},
-        $opt->{legend_is_vertical} );
+        $opt->{legend_is_vertical} , 
+        $opt->{legend_font}, $opt->{legend_font_size}, 
+    );
 
     #图例背景
     $c_legend->setBackground($perlchartdir::Transparent);
@@ -95,6 +97,8 @@ sub set_default_option {
     $opt->{label_font_size}   ||= 10;
     $opt->{label_font}        ||= $CHART_FONT;
     $opt->{legend}            ||= $opt->{label};
+    $opt->{legend_font_size}   ||= 10;
+    $opt->{legend_font}        ||= $CHART_FONT;
     $opt->{line_width}        ||= 1;
 
     $opt->{data_label_font_size} ||= 10;
@@ -156,6 +160,7 @@ sub chart_bar {
     my $color = set_color( \%opt );
     $c->addBarLayer3( $data, $color )->setBorderColor( -1, 1 );
     $c->xAxis()->setLabels( $opt{label} );
+
     $c->makeChart( $opt{file} );
 
     crop_img( $opt{file}, $opt{width}, $opt{height} - 10 );
@@ -235,8 +240,6 @@ sub chart_pie {    #饼图
     $c->setRoundedFrame();
     $c->setDropShadow();
     $c->setSectorStyle( $perlchartdir::LocalGradientShading, 0xbb000000, 1 );
-
-    set_legend( $c, \%opt );
 
     $c->makeChart( $opt{file} );
     crop_img( $opt{file}, $opt{width}, $opt{height} );
