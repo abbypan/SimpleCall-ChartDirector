@@ -3,7 +3,7 @@ use utf8;
 use SimpleCall::ChartDirector;
 
 chart_spline([[5, 6, 7, 8], [1, 2, 6, 9], [3, 9, 2, 4], ], 
-    file=> '05.chart_spline.png', 
+    file=> '06.chart_spline.png', 
     title => '测试一二', 
     label => [ 'day1', 'day3', 'day5', 'day7'] , 
     legend => [ 'aa','bb','cc'] , 
