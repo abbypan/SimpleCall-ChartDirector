@@ -39,7 +39,9 @@ L<SimpleCall::ChartDirector>
     );
 
 =begin html
+
 <img src="xt/01.chart_bar.png"></img>
+
 =end html
 
 =head2  chart_horizon_bar 条形图
