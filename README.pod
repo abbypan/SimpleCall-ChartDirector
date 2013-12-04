@@ -38,7 +38,9 @@ L<SimpleCall::ChartDirector>
         color => [ qw/Yellow Green Red1/ ], 
     );
 
-![chart_bar](xt/01.chart_bar.png)
+=begin html
+<img src="xt/01.chart_bar.png"></img>
+=end html
 
 =head2  chart_horizon_bar 条形图
 
