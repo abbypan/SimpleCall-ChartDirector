@@ -38,13 +38,32 @@ L<SimpleCall::ChartDirector>
         color => [ qw/Yellow Green Red1/ ], 
     );
 
+=begin html
+
+<img src="xt/01.chart_bar.png"></img>
+
+=end html
+
 =head2  chart_horizon_bar 条形图
 
     参数同 chart_bar
 
+=begin html
+
+<img src="xt/02.chart_horizon_bar.png"></img>
+
+=end html
+
+
 =head2  chart_pyramid 金字塔图
 
     参数同 chart_bar
+
+=begin html
+
+<img src="xt/03.chart_pyramid.png"></img>
+
+=end html
 
 =head2  chart_pie 饼图
 
@@ -74,6 +93,12 @@ L<SimpleCall::ChartDirector>
         #拉出一条线指向一块饼
         label_side_layout => 1, 
     );
+
+=begin html
+
+<img src="xt/04.chart_pie.png"></img>
+
+=end html
 
 =head2 chart_line 折线图
 
@@ -111,20 +136,52 @@ L<SimpleCall::ChartDirector>
         #y_axis_upper_limit => 10, 
     );
 
+=begin html
+
+<img src="xt/05.chart_line.png"></img>
+
+=end html
+
+
 =head2 chart_spline 平滑曲线图
     
     参数同 chart_line
+
+=begin html
+
+<img src="xt/06.chart_spline.png"></img>
+
+=end html
 
 =head2 chart_stacked_bar 累积柱状图
     
     参数同 chart_line
 
+=begin html
+
+<img src="xt/07.chart_stacked_bar.png"></img>
+
+=end html
+
 =head2 chart_stacked_area 面积图
 
     参数同 chart_line
 
+=begin html
+
+<img src="xt/08.chart_stacked_area.png"></img>
+
+=end html
+
+
 =head2 chart_multi_bar 多柱图
 
     参数同 chart_line
+
+=begin html
+
+<img src="xt/09.chart_multi_bar.png"></img>
+
+=end html
 
 =cut
