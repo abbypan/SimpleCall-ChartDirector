@@ -8,13 +8,19 @@ L<SimpleCall::ChartDirector>
 
 =head1 说明
  
- - 需要安装ChartDirector库
- - 需要把字体文件放到chart_director的fonts目录下，例如msyh.ttf/msyhbd.ttf
+- 需要安装ChartDirector库
+- 需要把字体文件放到chart_director的fonts目录下，例如msyh.ttf/msyhbd.ttf
 
- - 需要安装imagemagick
- - windows下需要在PATH系统变量中指定imagemagick的目录（置于最前），使得能从命令行直接调用convert/identify
+- 需要安装imagemagick
+- windows下需要在PATH系统变量中指定imagemagick的目录（置于最前），使得能从命令行直接调用convert/identify
 
 =head1 函数
+
+=begin html
+
+实例参考<a href="xt/">xt子文件夹</a>
+
+=end html
 
 =head2 chart_bar 柱状图
 
