@@ -2,8 +2,8 @@
 use utf8;
 use SimpleCall::ChartDirector;
 
-chart_3d_pyramid([1, 2, 3], 
-    file=> '03.chart_3d_pyramid.png', 
+chart_pyramid([1, 2, 3], 
+    file=> '03.chart_pyramid.png', 
     title => '测试一二', 
     label => [ '测试', '一二', '事情'] , 
     width => 460, 
