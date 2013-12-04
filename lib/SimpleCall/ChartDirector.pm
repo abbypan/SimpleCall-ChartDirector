@@ -9,15 +9,10 @@ require Exporter;
   chart_pyramid chart_pie
   chart_spline chart_line
   chart_stacked_bar chart_stacked_area chart_multi_bar
-  crop_img
 );
 
 use Encode;
 use POSIX qw/strtod/;
-
-#imagemagick
-our $BIN_CONVERT  = "convert";
-our $BIN_IDENTIFY = "identify";
 
 #需要微软雅黑字体，放到chart_director的fonts目录下
 our $CHART_FONT      = 'msyh.ttf';
@@ -162,8 +157,8 @@ sub chart_bar {
     $c->xAxis()->setLabels( $opt{label} );
 
     $c->makeChart( $opt{file} );
-
-    crop_img( $opt{file}, $opt{width}, $opt{height} - 10 );
+    
+    return $opt{file};
 } ## end sub draw_pie
 
 sub chart_pyramid {
@@ -185,23 +180,9 @@ sub chart_pyramid {
     $c->setLayerGap( $opt{layer_gap} );
 
     $c->makeChart( $opt{file} );
-    crop_img( $opt{file}, $opt{width}, $opt{height} - 10 );
+    return $opt{file};
 }
 
-sub crop_img {    #切割图片
-    my ( $file, $w, $h ) = @_;
-
-    chomp( $w ||= `$BIN_IDENTIFY  -format "%w" "$file"` );
-    chomp( $h ||= `$BIN_IDENTIFY  -format "%h" "$file"` );
-
-    print "crop img : $file , width  $w, height $h\n";
-
-    my $crop_cmd = qq[$BIN_CONVERT  "$file" -crop "${w}x${h}+0+0" "$file.temp"];
-    print $crop_cmd, "\n";
-    system("$crop_cmd");
-    rename( "$file.temp", $file );
-    return $file;
-} ## end sub crop_img
 
 sub map_color_to_hexcode {
     my ($color) = @_;
@@ -242,7 +223,7 @@ sub chart_pie {    #饼图
     $c->setSectorStyle( $perlchartdir::LocalGradientShading, 0xbb000000, 1 );
 
     $c->makeChart( $opt{file} );
-    crop_img( $opt{file}, $opt{width}, $opt{height} );
+    return $opt{file};
 }
 
 sub chart_spline {
@@ -347,7 +328,7 @@ sub chart_xy {    # XY型chart 基础函数
 
     set_legend( $c, \%opt );
     $c->makeChart( $opt{file} );
-    crop_img( $opt{file}, $opt{width}, $opt{height} - 10 );
+    return $opt{file};
 } ## end sub draw_xy_chart
 
 1;

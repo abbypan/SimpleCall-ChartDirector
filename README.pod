@@ -12,11 +12,6 @@ L<SimpleCall::ChartDirector>
 
 - 需要把字体文件放到chart_director的fonts目录下，例如msyh.ttf/msyhbd.ttf
 
-
-- 需要安装imagemagick
-
-- windows下需要在PATH系统变量中指定imagemagick的目录（置于最前），使得能从命令行直接调用convert/identify
-
 =head1 函数
 
 =begin html
