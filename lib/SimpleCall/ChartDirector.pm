@@ -15,7 +15,7 @@ require Exporter;
 use Encode;
 use POSIX qw/strtod/;
 
-our $VERSION=0.03;
+our $VERSION=0.04;
 
 #需要微软雅黑字体，放到chart_director的fonts目录下
 our $CHART_FONT      = 'msyh.ttf';
@@ -86,7 +86,7 @@ sub set_default_option {
     my ($opt) = @_;
     $opt->{width}             ||= 800;
     $opt->{height}            ||= 330;
-    $opt->{plot_area}         ||= [ 75, 70, 600, 200 ];
+    $opt->{plot_area}         ||= [ 75, 70, 700, 200 ];
     $opt->{title_font_size}   ||= 12;
     $opt->{title_font}        ||= $CHART_BOLD_FONT;
     $opt->{default_font}      ||= $CHART_FONT;
@@ -152,14 +152,16 @@ sub chart_bar {
     $c->addTitle( $opt{title}, $opt{title_font}, $opt{title_font_size} );
     $c->setPlotArea( @{ $opt{plot_area} } );
 
+    set_axis_option($c, %opt);
+
     $c->swapXY() if ( $opt{is_horizon_bar} );
 
     my $color = set_color( \%opt );
-    $c->addBarLayer3( $data, $color )->setBorderColor( -1, 1 );
-    $c->xAxis()->setLabels( $opt{label} );
+    my $layer = $c->addBarLayer3( $data, $color );
+    $layer->setAggregateLabelFormat($opt{data_label_format}) if($opt{with_data_label});
+    $layer->setBorderColor( -1, 1 );
 
     $c->makeChart( $opt{file} );
-    
     return $opt{file};
 } ## end sub draw_pie
 
@@ -301,13 +303,8 @@ sub chart_scatter {
     chart_xy( $data, %opt );
 }
 
-sub chart_xy {    # XY型chart 基础函数
-    my ( $data, %opt ) = @_;
-    set_default_option( \%opt );
-
-    my $c = new XYChart( $opt{width}, $opt{height} );
-    $c->setPlotArea( @{ $opt{plot_area} } );
-    $c->addTitle( $opt{title}, $opt{title_font}, $opt{title_font_size} );
+sub set_axis_option {
+    my ($c, %opt) = @_;
 
     #x
     set_axis_mark( $c->xAxis(), $opt{x_axis_mark} )
@@ -330,6 +327,19 @@ sub chart_xy {    # XY型chart 基础函数
       ->setDateScale( $opt{y_axis_lower_limit}, $opt{y_axis_upper_limit} )
       if (  exists $opt{y_axis_lower_limit}
         and exists $opt{y_axis_upper_limit} );
+
+}
+
+sub chart_xy {    # XY型chart 基础函数
+    my ( $data, %opt ) = @_;
+    set_default_option( \%opt );
+
+    my $c = new XYChart( $opt{width}, $opt{height} );
+    $c->setPlotArea( @{ $opt{plot_area} } );
+    $c->addTitle( $opt{title}, $opt{title_font}, $opt{title_font_size} );
+
+    #x/y 轴
+    set_axis_option($c, %opt);
 
     #画什么样的图
     my $color = set_color( \%opt );
