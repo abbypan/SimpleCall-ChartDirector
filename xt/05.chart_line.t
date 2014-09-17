@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 use utf8;
+use lib 'd:/copy/save/windows/chart_director';
+use lib '../lib';
 use SimpleCall::ChartDirector;
 
 chart_line([[5, 6, 7, 8], [1, 2, 6, 9], [3, 9, 2, 4], ], 
@@ -20,7 +22,7 @@ chart_line([[5, 6, 7, 8], [1, 2, 6, 9], [3, 9, 2, 4], ],
     legend_is_vertical => 0, 
 
     #描点加上不同形状
-    with_symbol_shape => 1, 
+    with_data_symbol => 1, 
 
     #描点加上标签
     with_data_label => 1, 
