@@ -56,14 +56,20 @@ perlchartdir::Cross2Shape(0.3), # 0.1 .. 0.7
 use perlchartdir;
 
 sub set_data_label {
-    ##描点的旁边加上具体数据
     my ( $layer, $opt ) = @_;
 
-    $layer->setDataLabelFormat( $opt->{data_label_format} );
+    if($opt->{with_data_label}){
+        ##描点的旁边加上具体数据
+        $layer->setDataLabelFormat( $opt->{data_label_format} );
 
-    #画图区域内数据标识的字体
-    $layer->setDataLabelStyle( $opt->{data_label_font},
-        $opt->{data_label_font_size} );
+        #画图区域内数据标识的字体
+        $layer->setDataLabelStyle( $opt->{data_label_font}, 
+            $opt->{data_label_font_size} );
+    }
+
+    #总数
+    $layer->setAggregateLabelFormat($opt->{data_label_format}) 
+        if($opt->{with_aggregate_data_label});
 }
 
 sub set_legend {
@@ -380,7 +386,7 @@ sub chart_xy {    # XY型chart 基础函数
         #$c->addScatterLayer($dataX0, $dataY0, "Genetically Engineered", $perlchartdir::DiamondSymbol, 13, 0xff9933);
     }else{
         $layer->setLineWidth( $opt{line_width} );
-        set_data_label( $layer, \%opt ) if($opt{with_data_label});
+        set_data_label( $layer, \%opt );
         for ( my $i = 0 ; $i <= $#$data ; $i++ ) {
             my $d = $data->[$i];
             $_ ||= 0 for @$d;

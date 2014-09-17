@@ -110,7 +110,7 @@ L<SimpleCall::ChartDirector>
         #描点加上不同形状
         with_data_symbol => 1, 
 
-        #描点加上标签
+        #描点加上数值标签
         with_data_label => 1, 
 
         #Y轴格式,例如'{value}%',
@@ -145,6 +145,7 @@ L<SimpleCall::ChartDirector>
     
     参数同 chart_line
 
+    with_aggregate_data_label => 1,  #显示多个legend的数值总和
 
 =begin html
 
