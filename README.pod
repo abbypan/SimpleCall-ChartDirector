@@ -199,4 +199,24 @@ L<SimpleCall::ChartDirector>
 
 =end html
 
+=head2 chart_percentage_bar 累积百分比柱状图
+    
+    参数同 chart_stacked_bar
+
+=begin html
+
+<img src="xt/11.chart_percentage_bar.png"></img>
+
+=end html
+
+=head2 chart_percentage_area 百分比面积图
+    
+    参数同 chart_stacked_area
+
+=begin html
+
+<img src="xt/12.chart_percentage_area.png"></img>
+
+=end html
+
 =cut

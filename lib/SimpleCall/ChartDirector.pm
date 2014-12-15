@@ -8,14 +8,15 @@ require Exporter;
   chart_bar 
   chart_pyramid chart_pie
   chart_spline chart_line
-  chart_stacked_bar chart_stacked_area chart_multi_bar
+  chart_percentage_bar chart_stacked_bar chart_multi_bar
+  chart_percentage_area chart_stacked_area
   chart_scatter
 );
 
 use Encode;
 use POSIX qw/strtod/;
 
-our $VERSION=0.05;
+our $VERSION=0.06;
 
 #需要微软雅黑字体，放到chart_director的fonts目录下
 our $CHART_FONT      = 'msyh.ttf';
@@ -24,7 +25,11 @@ our $CHART_BOLD_FONT = 'msyhbd.ttf';
 #颜色表，支持指定<DATA>中的颜色名，或者16进制值
 my @COLOR_HEXCODE = <DATA>;
 our %COLOR_HEXCODE = map { chomp; split; } @COLOR_HEXCODE;
-our @DEFAULT_COLORLIST = qw/LightBlue1 Green Yellow Red1 Purple LightGoldenrod/;
+our @DEFAULT_COLORLIST = qw/LightBlue1 Green Yellow Red1 Purple 
+LightGoldenrod Pink4 LemonChiffon2 LightCoral Salmon3
+IndianRed4 Khaki3 Chartreuse2 SeaGreen3 LightCyan3
+PaleVioletRed3
+/;
 our @DEFAULT_DATA_SYMBOL = (
     $perlchartdir::DiamondSymbol,       $perlchartdir::TriangleSymbol,
     $perlchartdir::CircleSymbol,        $perlchartdir::SquareSymbol,
@@ -273,11 +278,27 @@ sub chart_line {
     chart_xy( $data, %opt );
 }
 
+
+sub chart_percentage_bar {
+    my ( $data, %opt ) = @_;
+    chart_xy_layer($data, 'bar', $perlchartdir::Percentage, %opt);
+}
+
 sub chart_stacked_bar {
     my ( $data, %opt ) = @_;
+    chart_xy_layer($data, 'bar', $perlchartdir::Stack, %opt);
+}
+
+sub chart_xy_layer {
+    my ( $data, $type, $c_layer, %opt ) = @_;
     $opt{xy_chart_layer_sub} = sub {
         my ($c) = @_;
-        my $layer = $c->addBarLayer2( $perlchartdir::Stack, $opt{layer_3d_depth} );
+        my $layer;
+        if($type eq 'bar'){
+            $layer = $c->addBarLayer2( $c_layer, $opt{layer_3d_depth} );
+        }elsif($type eq 'area'){
+            $layer = $c->addAreaLayer2( $c_layer, $opt{layer_3d_depth} );
+        }
 
         if($opt{with_data_label}){
             $layer->setAggregateLabelStyle();
@@ -289,14 +310,26 @@ sub chart_stacked_bar {
     chart_xy( $data, %opt );
 }
 
+sub chart_percentage_area {
+    my ( $data, %opt ) = @_;
+    #$opt{xy_chart_layer_sub} = sub {
+        #my ($c) = @_;
+        #my $layer = $c->addAreaLayer2($perlchartdir::Stack, $opt{layer_3d_depth});
+        #return $layer;
+    #};
+    #chart_xy( $data, %opt );
+    chart_xy_layer($data, 'area', $perlchartdir::Percentage, %opt);
+}
+
 sub chart_stacked_area {
     my ( $data, %opt ) = @_;
-    $opt{xy_chart_layer_sub} = sub {
-        my ($c) = @_;
-        my $layer = $c->addAreaLayer2($perlchartdir::Stack, $opt{layer_3d_depth});
-        return $layer;
-    };
-    chart_xy( $data, %opt );
+    #$opt{xy_chart_layer_sub} = sub {
+        #my ($c) = @_;
+        #my $layer = $c->addAreaLayer2($perlchartdir::Stack, $opt{layer_3d_depth});
+        #return $layer;
+    #};
+    #chart_xy( $data, %opt );
+    chart_xy_layer($data, 'area', $perlchartdir::Stack, %opt);
 }
 
 sub chart_multi_bar {
@@ -330,7 +363,7 @@ sub set_axis_option {
 
     #x
     set_axis_mark( $c->xAxis(), $opt{x_axis_mark} )
-      if ( exists $opt{x_axis_mark} );
+    if ( exists $opt{x_axis_mark} );
     $c->xAxis()->setLabels( $opt{label} );
     $c->xAxis()->setLabelStyle(
         $opt{x_axis_font},       $opt{x_axis_font_size},
@@ -339,16 +372,16 @@ sub set_axis_option {
 
     #y
     set_axis_mark( $c->yAxis(), $opt{y_axis_mark} )
-      if ( exists $opt{y_axis_mark} );
+    if ( exists $opt{y_axis_mark} );
     $c->yAxis()->setLabelFormat( $opt{y_label_format} )
-      if ( exists $opt{y_label_format} );
+    if ( exists $opt{y_label_format} );
     $c->yAxis()->setLabelStyle( $opt{y_axis_font}, $opt{y_axis_font_size} );
     $c->yAxis()->setTickDensity( $opt{y_tick_density} )
-      if ( exists $opt{y_tick_density} );
+    if ( exists $opt{y_tick_density} );
     $c->yAxis()
-      ->setDateScale( $opt{y_axis_lower_limit}, $opt{y_axis_upper_limit} )
-      if (  exists $opt{y_axis_lower_limit}
-        and exists $opt{y_axis_upper_limit} );
+    ->setDateScale( $opt{y_axis_lower_limit}, $opt{y_axis_upper_limit} )
+    if (  exists $opt{y_axis_lower_limit}
+            and exists $opt{y_axis_upper_limit} );
 
 }
 
@@ -375,13 +408,13 @@ sub chart_xy {    # XY型chart 基础函数
         for ( my $i = 0 ; $i <= $#$data ; $i++ ) {
             my $d = $data->[$i];
             $layer->({
-                data=> $d, 
-                color => $color->[$i], 
-                legend => $opt{legend}[$i], 
-                data_symbol => $opt{data_symbol}[$i], 
-                data_symbol_size => $opt{data_symbol_size}, 
-                with_data_symbol => $opt{with_data_symbol}, 
-            });
+                    data=> $d, 
+                    color => $color->[$i], 
+                    legend => $opt{legend}[$i], 
+                    data_symbol => $opt{data_symbol}[$i], 
+                    data_symbol_size => $opt{data_symbol_size}, 
+                    with_data_symbol => $opt{with_data_symbol}, 
+                });
         }
         #$c->addScatterLayer($dataX0, $dataY0, "Genetically Engineered", $perlchartdir::DiamondSymbol, 13, 0xff9933);
     }else{
